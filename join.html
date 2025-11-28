@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join VECTOR | Collaborate, Study, Build</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #94a3b8;
+            --light: #f8fafc;
+            --outline: rgba(99, 102, 241, 0.25);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.7;
+        }
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(99,102,241,0.15), transparent 45%),
+                radial-gradient(circle at 80% 0%, rgba(236,72,153,0.15), transparent 40%);
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.08em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 120px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            padding: 4rem 0 5rem;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-outline {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid var(--outline);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--outline);
+            border-radius: 30px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.4);
+        }
+
+        .hero-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat {
+            padding: 1.2rem;
+            border-radius: 18px;
+            background: rgba(99, 102, 241, 0.07);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .stat h4 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .grid-three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--outline);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--gray);
+        }
+
+        .meta {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .meta span {
+            padding: 0.3rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--light);
+            font-size: 0.85rem;
+        }
+
+        .apply-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .timeline {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid var(--outline);
+            border-radius: 28px;
+            padding: 3rem;
+        }
+
+        .timeline ul {
+            list-style: none;
+        }
+
+        .timeline li {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .timeline li:last-child {
+            border-bottom: none;
+        }
+
+        .timeline strong {
+            color: var(--primary);
+            letter-spacing: 0.08em;
+        }
+
+        .collab-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .collab-item {
+            border: 1px dashed rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .collab-item h3 {
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-panel {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--outline);
+            border-radius: 28px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--gray);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .contact-details {
+            display: grid;
+            gap: 1.2rem;
+        }
+
+        .detail-card {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 1.8rem;
+        }
+
+        .detail-card small {
+            display: block;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        footer {
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            padding: 2.5rem 0;
+            text-align: center;
+            color: var(--gray);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .timeline li {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">VECTOR</div>
+            <ul>
+                <li><a href="landing.html#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publication.html">Publications</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="join.html">Join Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="hero">
+                <div>
+                    <h1>Join VECTOR Research Lab</h1>
+                    <p>Collaborate with a team pushing the boundaries of multimodal, human-centred, and knowledge-guided AI. We welcome curious thinkers, pragmatic builders, and interdisciplinary partners.</p>
+                    <div class="hero-actions">
+                        <a href="#open-positions" class="btn btn-primary">View Open Positions</a>
+                        <a href="#collaborations" class="btn btn-outline">Propose a Collaboration</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <h3>What we offer</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">Mentorship across cognitive science, NLP, computer vision, HCI, and interpretability — with a commitment to open science and real-world impact.</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <h4>5+</h4>
+                            <p>Fellowship pathways</p>
+                        </div>
+                        <div class="stat">
+                            <h4>12</h4>
+                            <p>Active collaborations</p>
+                        </div>
+                        <div class="stat">
+                            <h4>4</h4>
+                            <p>Continents represented</p>
+                        </div>
+                        <div class="stat">
+                            <h4>Open</h4>
+                            <p>Science commitments</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="open-positions">
+                <div class="section-header">
+                    <h2>Open Positions</h2>
+                    <p>We recruit on a rolling basis for students, postdocs, research engineers, and visiting fellows. All roles emphasize multimodal, interpretable, and resource-efficient AI.</p>
+                </div>
+                <div class="grid-three">
+                    <div class="card">
+                        <h3>PhD Fellowship — Multimodal Reasoning</h3>
+                        <p>Develop new paradigms for combining vision, language, and behavioural signals. Ideal for applicants who enjoy building models and designing evaluation science.</p>
+                        <div class="meta">
+                            <span>Deadline: Feb 15</span>
+                            <span>Location: Hybrid</span>
+                            <span>Advisor: VECTOR PI</span>
+                        </div>
+                        <a class="apply-link" href="mailto:info@vectorlab.ai?subject=PhD%20Application%20-%20VECTOR">Apply via email →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Postdoctoral Scholar — Neural-Symbolic Systems</h3>
+                        <p>Lead research on interpretable hybrid architectures. Collaborate with external partners in education, healthcare, and scientific discovery.</p>
+                        <div class="meta">
+                            <span>Deadline: Mar 30</span>
+                            <span>1–2 years</span>
+                            <span>Open science track</span>
+                        </div>
+                        <a class="apply-link" href="mailto:info@vectorlab.ai?subject=Postdoc%20Application%20-%20VECTOR">Submit dossier →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Research Engineer — Evaluation & Tooling</h3>
+                        <p>Build open-source toolkits for benchmarking multimodal systems. Applicants should enjoy designing fast, reliable experiments and Colab-friendly pipelines.</p>
+                        <div class="meta">
+                            <span>Deadline: Rolling</span>
+                            <span>Remote-friendly</span>
+                            <span>12-month contract</span>
+                        </div>
+                        <a class="apply-link" href="mailto:info@vectorlab.ai?subject=Research%20Engineer%20-%20VECTOR">Share portfolio →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="collaborations">
+                <div class="section-header">
+                    <h2>Collaboration Opportunities</h2>
+                    <p>We co-design studies, shared datasets, and applied pilots with universities, civic groups, and industry partners who align with our mission.</p>
+                </div>
+                <div class="collab-list">
+                    <div class="collab-item">
+                        <h3>Cross-Disciplinary Research</h3>
+                        <p>Partner with cognitive science, linguistics, HCI, CV, robotics, and educational technology teams. We welcome joint grant proposals and sabbatical exchanges.</p>
+                        <ul style="color: var(--gray); margin-top: 1rem; padding-left: 1.2rem;">
+                            <li>Shared PhD supervision</li>
+                            <li>Joint dataset releases</li>
+                            <li>Co-authored position papers</li>
+                        </ul>
+                    </div>
+                    <div class="collab-item">
+                        <h3>Community & Social Impact Pilots</h3>
+                        <p>Deploy resource-efficient AI for public-good settings (education, accessibility, linguistic diversity). We prioritise participatory design.</p>
+                        <ul style="color: var(--gray); margin-top: 1rem; padding-left: 1.2rem;">
+                            <li>Education & accessibility partners</li>
+                            <li>Non-profit data collaborations</li>
+                            <li>Policy and standards working groups</li>
+                        </ul>
+                    </div>
+                    <div class="collab-item">
+                        <h3>Industry-Facing Sandboxes</h3>
+                        <p>Prototype explainable, low-resource AI stacks for emerging products. Includes benchmarking, design reviews, and technical workshops.</p>
+                        <ul style="color: var(--gray); margin-top: 1rem; padding-left: 1.2rem;">
+                            <li>Tooling assessments</li>
+                            <li>Responsible AI audits</li>
+                            <li>Joint fellow placements</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="visiting">
+                <div class="section-header">
+                    <h2>Visiting Researchers & Residencies</h2>
+                    <p>Short-term residencies (6–12 weeks) for scholars, practitioners, and artists exploring multimodal learning, evaluation science, or cognitive modelling.</p>
+                </div>
+                <div class="grid-three">
+                    <div class="card">
+                        <h3>Methodology Sprints</h3>
+                        <p>Structured residencies focused on publishing playbooks and reproducible pipelines. Includes access to VECTOR datasets and evaluation suites.</p>
+                        <div class="meta">
+                            <span>4–6 weeks</span>
+                            <span>Rolling cohorts</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Creative AI Fellowships</h3>
+                        <p>Invites designers, educators, and artists to explore new narratives around multimodal AI, interpretability, and community co-design.</p>
+                        <div class="meta">
+                            <span>Fall & Spring</span>
+                            <span>Stipend available</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Embedded Industry Residencies</h3>
+                        <p>Bring your product team to VECTOR for design reviews, rapid prototyping, and responsible AI evaluations.</p>
+                        <div class="meta">
+                            <span>Custom timeline</span>
+                            <span>Scoped projects</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="resources">
+                <div class="section-header">
+                    <h2>Application Timeline & Resources</h2>
+                    <p>Most opportunities run on rolling review. Priority consideration goes to submissions received ahead of the seasonal checkpoints below.</p>
+                </div>
+                <div class="timeline">
+                    <ul>
+                        <li>
+                            <strong>Jan–Feb</strong>
+                            <div>
+                                <h4>Spring Intake</h4>
+                                <p>PhD fellowship interviews, postdoc onboarding, and community pilot proposals.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>May–Jun</strong>
+                            <div>
+                                <h4>Summer Residency Cycle</h4>
+                                <p>Visiting researchers, artist-in-residence selections, and new benchmark releases.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>Sep–Oct</strong>
+                            <div>
+                                <h4>Autumn Collaborations</h4>
+                                <p>Joint grants, evaluation workshops, and civic/education deployments.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section" id="contact-collab">
+                <div class="section-header">
+                    <h2>Send a Proposal</h2>
+                    <p>Tell us about your background, interests, and how you’d like to collaborate. We respond to most inquiries within two weeks.</p>
+                </div>
+                <div class="contact-panel">
+                    <form>
+                        <div>
+                            <label for="name">Full Name</label>
+                            <input id="name" type="text" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email">Email</label>
+                            <input id="email" type="email" placeholder="name@institution.edu">
+                        </div>
+                        <div>
+                            <label for="affiliation">Affiliation</label>
+                            <input id="affiliation" type="text" placeholder="University / Organization">
+                        </div>
+                        <div>
+                            <label for="interest">I'm interested in</label>
+                            <select id="interest">
+                                <option>PhD / Graduate Study</option>
+                                <option>Postdoctoral / Research Fellowship</option>
+                                <option>Collaboration / Joint Grant</option>
+                                <option>Visiting Scholar / Residency</option>
+                                <option>Industry / Policy Partnership</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message">Proposal / Message</label>
+                            <textarea id="message" placeholder="Share research interests, timeline, or project goals"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+                    </form>
+
+                    <div class="contact-details">
+                        <div class="detail-card">
+                            <small>General Contact</small>
+                            <p>info@vectorlab.ai</p>
+                            <p style="color: var(--gray);">We aim to respond within 3–5 business days.</p>
+                        </div>
+                        <div class="detail-card">
+                            <small>Collaboration Desk</small>
+                            <p>collaborate@vectorlab.ai</p>
+                            <p style="color: var(--gray);">Share MOUs, grant ideas, or dataset proposals.</p>
+                        </div>
+                        <div class="detail-card">
+                            <small>Newsletter</small>
+                            <p>Quarterly research digests, opportunities, and releases.</p>
+                            <a href="https://vectorlab.ai/newsletter" style="color: var(--primary); text-decoration: none;">Subscribe →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 VECTOR Research Lab — Open, ethical, human-centred AI.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

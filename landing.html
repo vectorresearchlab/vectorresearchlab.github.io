@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VECTOR Research Lab | Multimodal AI Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .bg-animation canvas {
+            display: block;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text .tagline {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card:nth-child(2) {
+            top: 50%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .floating-card p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Research Themes Section */
+        .section {
+            padding: 8rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .theme-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .theme-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .theme-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .theme-card p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .learn-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .learn-more:hover {
+            gap: 1rem;
+        }
+
+        /* Publications Section */
+        .publications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .publication-item {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .publication-item:hover {
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .publication-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .publication-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .publication-meta span {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .publication-meta .venue {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .publication-item p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .publication-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .publication-links a {
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .publication-links a:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-light);
+            padding: 4rem 0 2rem;
+            margin-top: 8rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .footer-section p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            color: var(--gray);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <canvas id="bgCanvas"></canvas>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">VECTOR</div>
+            <ul>
+                <li><a href="landing.html#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publication.html">Publications</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="join.html">Join Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>VECTOR Research Lab</h1>
+                        <p class="tagline">Exploring learning across language, vision, and behaviour</p>
+                        <p>We investigate how intelligent systems learn from diverse modalities—including language, vision, behaviour, and structured knowledge—to better understand and support human experience. We develop resource-efficient, ethically aligned AI methods that scale across tasks and domains.</p>
+                        <div class="cta-buttons">
+                            <a href="research.html" class="btn btn-primary">Explore Our Research</a>
+                            <a href="publication.html" class="btn btn-secondary">View Publications</a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="floating-card">
+                            <h4>🧠 Multimodal Learning</h4>
+                            <p>Integrating language, vision, and behaviour</p>
+                        </div>
+                        <div class="floating-card">
+                            <h4>⚡ Resource-Efficient</h4>
+                            <p>Low-resource, high-impact methods</p>
+                        </div>
+                        <div class="floating-card">
+                            <h4>🌍 Human-Centred</h4>
+                            <p>AI that understands and supports humans</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="research">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Research Themes</h2>
+                    <p>Our work spans foundational modelling, applied machine learning, and cross-disciplinary computational research</p>
+                </div>
+                <div class="themes-grid">
+                    <div class="theme-card">
+                        <div class="theme-icon">🧠</div>
+                        <h3>Human-Centred AI</h3>
+                        <p>Designing intelligent systems grounded in human needs, cognition, behaviour, and societal context. We build AI that adapts to real-world complexity and human experience.</p>
+                        <a href="research.html#themes" class="learn-more">Learn more →</a>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-icon">🔄</div>
+                        <h3>Multimodal & Behavioural Learning</h3>
+                        <p>Building models that learn from and reason across languages, vision, signals, structured knowledge, and human behaviour for comprehensive understanding.</p>
+                        <a href="research.html#themes" class="learn-more">Learn more →</a>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-icon">🔗</div>
+                        <h3>Symbolic + Neural Integration</h3>
+                        <p>Combining symbolic reasoning with neural architectures to create models that explain, justify, and reveal underlying patterns in human and machine processes.</p>
+                        <a href="research.html#themes" class="learn-more">Learn more →</a>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-icon">⚡</div>
+                        <h3>Scalable & Low-Resource AI</h3>
+                        <p>Developing methods that perform reliably in low-resource environments, generalise across domains, and remain computationally affordable.</p>
+                        <a href="research.html#themes" class="learn-more">Learn more →</a>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>Open</h3>
+                            <p>Science Approach</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>5+</h3>
+                            <p>Research Domains</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Global</h3>
+                            <p>Impact Focus</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>∞</h3>
+                            <p>Possibilities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="publications">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recent Publications</h2>
+                    <p>Selected recent work from the lab</p>
+                </div>
+                <div class="publications-list">
+                    <div class="publication-item">
+                        <h4>Multimodal Representations for Resource-Constrained Environments</h4>
+                        <div class="publication-meta">
+                            <span class="venue">NeurIPS 2024</span>
+                            <span>Authors et al.</span>
+                            <span>2024</span>
+                        </div>
+                        <p>We present a novel approach to building multimodal representations that operate efficiently under computational constraints while maintaining high performance across diverse tasks.</p>
+                        <div class="publication-links">
+                            <a href="#">PDF</a>
+                            <a href="#">Code</a>
+                            <a href="#">BibTeX</a>
+                        </div>
+                    </div>
+                    <div class="publication-item">
+                        <h4>Cross-Lingual Transfer in Low-Resource Settings</h4>
+                        <div class="publication-meta">
+                            <span class="venue">ACL 2024</span>
+                            <span>Authors et al.</span>
+                            <span>2024</span>
+                        </div>
+                        <p>Investigating transfer learning mechanisms that enable effective cross-lingual understanding with minimal training data in underrepresented languages.</p>
+                        <div class="publication-links">
+                            <a href="#">PDF</a>
+                            <a href="#">ArXiv</a>
+                            <a href="#">Dataset</a>
+                        </div>
+                    </div>
+                    <div class="publication-item">
+                        <h4>Interpretable Neural-Symbolic Architectures</h4>
+                        <div class="publication-meta">
+                            <span class="venue">ICLR 2024</span>
+                            <span>Authors et al.</span>
+                            <span>2024</span>
+                        </div>
+                        <p>A framework for combining symbolic reasoning with deep learning to create models that provide human-understandable explanations for their predictions.</p>
+                        <div class="publication-links">
+                            <a href="#">PDF</a>
+                            <a href="#">Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="join">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Join Our Lab</h2>
+                    <p>We're always looking for passionate researchers and collaborators</p>
+                </div>
+                <div class="themes-grid">
+                    <div class="theme-card">
+                        <div class="theme-icon">🎓</div>
+                        <h3>PhD Students</h3>
+                        <p>We welcome applications from motivated students interested in multimodal AI, human-centred computing, and low-resource machine learning.</p>
+                        <a href="join.html#open-positions" class="learn-more">Apply now →</a>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-icon">🔬</div>
+                        <h3>Research Collaborations</h3>
+                        <p>Interested in collaborative research? We work across cognitive science, linguistics, computer vision, and symbolic reasoning.</p>
+                        <a href="join.html#collaborations" class="learn-more">Get in touch →</a>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-icon">💼</div>
+                        <h3>Visiting Researchers</h3>
+                        <p>We host visiting researchers and postdocs for collaborative projects aligned with our research mission.</p>
+                        <a href="join.html#visiting" class="learn-more">Learn more →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VECTOR Research Lab</h4>
+                    <p>Advancing the science and engineering of multimodal, human-centred, and knowledge-guided AI through open research and ethical innovation.</p>
+                    <div class="social-links">
+                        <a href="#">📧</a>
+                        <a href="#">🐦</a>
+                        <a href="#">💼</a>
+                        <a href="#">📚</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Research</h4>
+                    <ul>
+                        <li><a href="publication.html">Publications</a></li>
+                        <li><a href="research.html#projects">Projects</a></li>
+                        <li><a href="publication.html#datasets">Datasets</a></li>
+                        <li><a href="https://github.com" target="_blank">Code</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Lab</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="people.html">People</a></li>
+                        <li><a href="join.html#news">News</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="publication.html#datasets">Documentation</a></li>
+                        <li><a href="join.html#resources">Tutorials</a></li>
+                        <li><a href="publication.html#datasets">Tools</a></li>
+                        <li><a href="join.html">Join Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VECTOR Research Lab. All rights reserved. | Committed to open science and ethical AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animated Background
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 80;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.2 - distance / 750})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

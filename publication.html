@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications | VECTOR Research Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 0 6rem;
+        }
+
+        .page-header h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .filter-label {
+            color: var(--light);
+            font-weight: 600;
+            margin-right: 0.3rem;
+        }
+
+        .filter-button {
+            padding: 0.6rem 1.2rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .filter-button:hover, .filter-button.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Publication Sections */
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .publications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .publication-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .publication-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .publication-card:hover {
+            border-color: var(--primary);
+            transform: translateX(8px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+        }
+
+        .publication-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .publication-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            gap: 2rem;
+        }
+
+        .publication-card h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .publication-year {
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .publication-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .publication-meta span {
+            color: var(--gray);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .venue-badge {
+            color: var(--primary);
+            font-weight: 700;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+        }
+
+        .publication-card .description {
+            color: var(--light);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .publication-tags {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.4rem 1rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            color: var(--secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .publication-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pub-link {
+            padding: 0.7rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pub-link:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Award Badge */
+        .award-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Resources Section */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .resource-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .resource-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .resource-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        footer {
+            background: var(--dark-light);
+            padding: 3rem 0 1.5rem;
+            margin-top: 6rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            text-align: center;
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .filter-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .publication-header {
+                flex-direction: column;
+            }
+
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">VECTOR</div>
+            <ul>
+                <li><a href="landing.html#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publication.html">Publications</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="join.html">Join Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="page-header">
+            <div class="container">
+                <h1>Publications</h1>
+                <p>Our contributions to multimodal AI research and open science</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group" data-filter-group="type">
+                    <span class="filter-label">Type:</span>
+                    <button class="filter-button active" data-group="type" data-value="all">All</button>
+                    <button class="filter-button" data-group="type" data-value="conference">Conference</button>
+                    <button class="filter-button" data-group="type" data-value="journal">Journal</button>
+                    <button class="filter-button" data-group="type" data-value="preprint">Preprint</button>
+                </div>
+                <div class="filter-group" data-filter-group="year">
+                    <span class="filter-label">Year:</span>
+                    <button class="filter-button active" data-group="year" data-value="all">All</button>
+                    <button class="filter-button" data-group="year" data-value="2025">2025</button>
+                    <button class="filter-button" data-group="year" data-value="2024">2024</button>
+                    <button class="filter-button" data-group="year" data-value="2023">2023</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <h3>48+</h3>
+                    <p>Publications</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3.2k+</h3>
+                    <p>Citations</p>
+                </div>
+                <div class="stat-card">
+                    <h3>12+</h3>
+                    <p>Open Datasets</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24+</h3>
+                    <p>Open-Source Tools</p>
+                </div>
+            </div>
+
+            <!-- Conference Papers -->
+            <div class="section" id="conference">
+                <h2 class="section-title">Conference Papers</h2>
+                <div class="publications-list">
+                    <div class="publication-card" data-type="conference" data-year="2024">
+                        <span class="award-badge">🏆 Best Paper</span>
+                        <div class="publication-header">
+                            <h3>Multimodal Representations for Resource-Constrained Environments</h3>
+                            <span class="publication-year">2024</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">NeurIPS 2024</span>
+                            <span>J. Smith, A. Johnson, M. Chen, R. Williams</span>
+                        </div>
+                        <p class="description">We present a novel approach to building multimodal representations that operate efficiently under computational constraints while maintaining high performance across diverse tasks. Our method combines parameter-efficient fine-tuning with cross-modal attention mechanisms to achieve state-of-the-art results on multiple benchmarks with 60% fewer parameters.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Multimodal Learning</span>
+                            <span class="tag">Resource Efficiency</span>
+                            <span class="tag">Transfer Learning</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/pdf/2401.12345.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://github.com/vectorlab/multimodal-efficiency" target="_blank" class="pub-link">💻 Code</a>
+                            <a href="https://huggingface.co/datasets/vectorlab/multimodal-efficiency" target="_blank" class="pub-link">📊 Dataset</a>
+                            <a href="https://dblp.org/rec/conf/nips/VectorLab2024.html?view=bibtex" target="_blank" class="pub-link">📋 BibTeX</a>
+                        </div>
+                    </div>
+
+                    <div class="publication-card" data-type="conference" data-year="2024">
+                        <div class="publication-header">
+                            <h3>Cross-Lingual Transfer in Low-Resource Settings: A Comprehensive Study</h3>
+                            <span class="publication-year">2024</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">ACL 2024</span>
+                            <span>M. Rodriguez, K. Patel, L. Thompson</span>
+                        </div>
+                        <p class="description">Investigating transfer learning mechanisms that enable effective cross-lingual understanding with minimal training data in underrepresented languages. We introduce a new benchmark dataset covering 25 low-resource languages and demonstrate significant improvements over previous methods.</p>
+                        <div class="publication-tags">
+                            <span class="tag">NLP</span>
+                            <span class="tag">Cross-Lingual</span>
+                            <span class="tag">Low-Resource</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/pdf/2404.01234.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://arxiv.org/abs/2404.01234" target="_blank" class="pub-link">📰 ArXiv</a>
+                            <a href="https://huggingface.co/datasets/vectorlab/multiling-25" target="_blank" class="pub-link">📊 Dataset</a>
+                            <a href="https://slides.com/vectorlab/acl24-crosslingual" target="_blank" class="pub-link">🎥 Presentation</a>
+                        </div>
+                    </div>
+
+                    <div class="publication-card" data-type="conference" data-year="2024">
+                        <div class="publication-header">
+                            <h3>Interpretable Neural-Symbolic Architectures for Reasoning</h3>
+                            <span class="publication-year">2024</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">ICLR 2024</span>
+                            <span>S. Lee, D. Kumar, F. Zhang, A. Martinez</span>
+                        </div>
+                        <p class="description">A framework for combining symbolic reasoning with deep learning to create models that provide human-understandable explanations for their predictions. We demonstrate applications in medical diagnosis, legal reasoning, and scientific discovery.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Neural-Symbolic</span>
+                            <span class="tag">Interpretability</span>
+                            <span class="tag">Reasoning</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/pdf/2403.04567.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://github.com/vectorlab/neusymbolic" target="_blank" class="pub-link">💻 Code</a>
+                            <a href="https://vectorlab.ai/demos/neusymbolic" target="_blank" class="pub-link">🔗 Demo</a>
+                        </div>
+                    </div>
+
+                    <div class="publication-card" data-type="conference" data-year="2024">
+                        <div class="publication-header">
+                            <h3>Vision-Language Models for Embodied AI: Grounding and Navigation</h3>
+                            <span class="publication-year">2024</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">CVPR 2024</span>
+                            <span>T. Anderson, H. Kim, B. Wilson</span>
+                        </div>
+                        <p class="description">Developing vision-language models that enable robots to understand natural language instructions and navigate complex environments. Our approach achieves 92% success rate on real-world navigation tasks.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Computer Vision</span>
+                            <span class="tag">Embodied AI</span>
+                            <span class="tag">Vision-Language</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/VECTOR_Vision-Language_Models_for_Embodied_AI_CVPR_2024_paper.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://github.com/vectorlab/embodied-vlm" target="_blank" class="pub-link">💻 Code</a>
+                            <a href="https://www.youtube.com/playlist?list=PLvectorlabVLM" target="_blank" class="pub-link">🎥 Videos</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journal Articles -->
+            <div class="section" id="journals">
+                <h2 class="section-title">Journal Articles</h2>
+                <div class="publications-list">
+                    <div class="publication-card" data-type="journal" data-year="2024">
+                        <div class="publication-header">
+                            <h3>A Survey of Human-Centred AI: Bridging Cognitive Science and Machine Learning</h3>
+                            <span class="publication-year">2024</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">Nature Machine Intelligence</span>
+                            <span>P. Chen, R. Brown, S. Garcia</span>
+                        </div>
+                        <p class="description">Comprehensive review of human-centred AI approaches, examining how cognitive science principles inform modern machine learning architectures. We identify key research directions and propose a unified framework for future work.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Survey</span>
+                            <span class="tag">Human-Centred AI</span>
+                            <span class="tag">Cognitive Science</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/pdf/2405.06789.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://doi.org/10.1038/s42256-024-00000-0" target="_blank" class="pub-link">🔗 DOI</a>
+                            <a href="https://dblp.org/rec/journals/natmi/VectorLab2024.html?view=bibtex" target="_blank" class="pub-link">📋 BibTeX</a>
+                        </div>
+                    </div>
+
+                    <div class="publication-card" data-type="journal" data-year="2023">
+                        <div class="publication-header">
+                            <h3>Efficient Fine-Tuning for Domain Adaptation in Medical Imaging</h3>
+                            <span class="publication-year">2023</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">IEEE TPAMI</span>
+                            <span>N. Davis, O. Ahmed, Q. Liu</span>
+                        </div>
+                        <p class="description">Novel parameter-efficient fine-tuning methods for adapting vision models to medical imaging tasks. Achieves comparable performance to full fine-tuning with 95% fewer trainable parameters.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Medical AI</span>
+                            <span class="tag">Transfer Learning</span>
+                            <span class="tag">Computer Vision</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/pdf/2309.09876.pdf" target="_blank" class="pub-link">📄 PDF</a>
+                            <a href="https://doi.org/10.1109/TPAMI.2023.1234567" target="_blank" class="pub-link">🔗 DOI</a>
+                            <a href="https://github.com/vectorlab/med-efficient-ft" target="_blank" class="pub-link">💻 Code</a>
+                            <a href="https://dblp.org/rec/journals/pami/VectorLab2023.html?view=bibtex" target="_blank" class="pub-link">📋 BibTeX</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preprints -->
+            <div class="section" id="preprints">
+                <h2 class="section-title">Preprints & Work-in-Progress</h2>
+                <div class="publications-list">
+                    <div class="publication-card" data-type="preprint" data-year="2025">
+                        <div class="publication-header">
+                            <h3>Towards Universal Multimodal Understanding: A Unified Architecture</h3>
+                            <span class="publication-year">2025</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">ArXiv</span>
+                            <span>E. Taylor, G. White, I. Nakamura</span>
+                        </div>
+                        <p class="description">Proposing a unified architecture for processing any combination of modalities (vision, language, audio, sensor data) without task-specific components. Early results show promise for true multimodal generalization.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Multimodal</span>
+                            <span class="tag">Foundation Models</span>
+                            <span class="tag">Architecture</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/abs/2501.01234" target="_blank" class="pub-link">📄 ArXiv</a>
+                            <a href="https://github.com/vectorlab/universal-multimodal" target="_blank" class="pub-link">💻 Code (Coming Soon)</a>
+                        </div>
+                    </div>
+
+                    <div class="publication-card" data-type="preprint" data-year="2025">
+                        <div class="publication-header">
+                            <h3>Cognitive Agents for Interactive Learning Environments</h3>
+                            <span class="publication-year">2025</span>
+                        </div>
+                        <div class="publication-meta">
+                            <span class="venue-badge">ArXiv</span>
+                            <span>C. Moore, V. Singh, W. Jackson</span>
+                        </div>
+                        <p class="description">Developing AI agents that model student cognition to provide personalized, adaptive learning experiences. Preliminary studies show significant improvements in learning outcomes.</p>
+                        <div class="publication-tags">
+                            <span class="tag">Educational AI</span>
+                            <span class="tag">Cognitive Modelling</span>
+                            <span class="tag">Interactive Systems</span>
+                        </div>
+                        <div class="publication-links">
+                            <a href="https://arxiv.org/abs/2502.09876" target="_blank" class="pub-link">📄 ArXiv</a>
+                            <a href="https://vectorlab.ai/demos/cognitive-agents" target="_blank" class="pub-link">🔗 Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources -->
+            <div class="section" id="datasets">
+                <h2 class="section-title">Datasets & Tools</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">📊</div>
+                        <h3>MultiLing-25 Dataset</h3>
+                        <p>Comprehensive multilingual dataset covering 25 low-resource languages with parallel text, annotations, and evaluation benchmarks.</p>
+                        <a href="https://huggingface.co/datasets/vectorlab/MultiLing-25" target="_blank" class="resource-link">Download Dataset →</a>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">🛠️</div>
+                        <h3>EfficientMultimodal Toolkit</h3>
+                        <p>Open-source library for building resource-efficient multimodal models with pre-trained components and training utilities.</p>
+                        <a href="https://github.com/vectorlab/efficient-multimodal-toolkit" target="_blank" class="resource-link">View on GitHub →</a>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">📐</div>
+                        <h3>NeuSymbolic Framework</h3>
+                        <p>Python framework for building interpretable neural-symbolic models with symbolic reasoning modules.</p>
+                        <a href="https://vectorlab.ai/tools/neusymbolic" target="_blank" class="resource-link">Documentation →</a>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">🧪</div>
+                        <h3>CogBench Evaluation Suite</h3>
+                        <p>Benchmark suite for evaluating cognitive capabilities of AI systems across reasoning, memory, and learning tasks.</p>
+                        <a href="https://github.com/vectorlab/cogbench" target="_blank" class="resource-link">Access Benchmarks →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 VECTOR Research Lab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const filterState = { type: 'all', year: 'all' };
+        const publicationCards = document.querySelectorAll('.publication-card');
+        const filterGroups = document.querySelectorAll('.filter-group');
+
+        function applyFilters() {
+            publicationCards.forEach(card => {
+                const matchesType = filterState.type === 'all' || card.dataset.type === filterState.type;
+                const matchesYear = filterState.year === 'all' || card.dataset.year === filterState.year;
+                card.style.display = matchesType && matchesYear ? 'block' : 'none';
+            });
+        }
+
+        filterGroups.forEach(group => {
+            const buttons = group.querySelectorAll('.filter-button');
+            const groupName = group.dataset.filterGroup;
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    filterState[groupName] = button.dataset.value;
+                    applyFilters();
+                });
+            });
+        });
+
+        applyFilters();
+    </script>
+</body>
+</html>
