@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training & Development | VECTOR Research Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            padding: 3rem;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--primary);
+        }
+
+        .program-card {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+        }
+
+        .program-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .program-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .detail-item {
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 6px;
+        }
+
+        .detail-item strong {
+            color: var(--primary);
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #7c3aed;
+        }
+
+        .philosophy-box {
+            background: rgba(236, 72, 153, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .philosophy-box h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item strong {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .principle-card {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .principle-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .principle-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .footer-section ul {
+            margin-left: 0;
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">VECTOR</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publication.html">Publications</a></li>
+                <li><a href="training.html">Training & Development</a></li>
+                <li><a href="people.html">People</a></li>
+                <li><a href="join.html">Join Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>Training & Development for Researchers</h1>
+                <p>Building sustainable publication pipelines and research profiles for the next generation</p>
+            </div>
+
+            <div class="section">
+                <h2>Our Philosophy</h2>
+                <p>We don't just help you publish one paper—we train you to build sustainable publication pipelines that serve your entire career. Our approach focuses on capacity building, skill development, and creating systems that support long-term research productivity.</p>
+                
+                <div class="philosophy-box">
+                    <h4>Our Commitment</h4>
+                    <p>As active researchers in multimodal AI who navigate publication processes ourselves, we understand the challenges you face. We share our knowledge, strategies, and systems to help you develop your own research communication capabilities.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Research Training Programs</h2>
+                <p>Comprehensive programs designed to develop specific research communication and publication skills:</p>
+
+                <div class="program-card">
+                    <h4>Technical Writing for Researchers</h4>
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <strong>Duration:</strong> Multi-week program
+                        </div>
+                        <div class="detail-item">
+                            <strong>Format:</strong> Workshops + exercises + feedback
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ideal for:</strong> PhD students, early-career researchers
+                        </div>
+                    </div>
+                    <p><strong>What you'll develop:</strong></p>
+                    <ul>
+                        <li>Skills to communicate complex technical ideas clearly</li>
+                        <li>Understanding of academic writing conventions</li>
+                        <li>Ability to structure compelling research narratives</li>
+                        <li>Self-editing and revision capabilities</li>
+                        <li>Strategies for writing efficiently alongside research</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>Publication Strategy & Pipeline Development</h4>
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <strong>Duration:</strong> Multi-week program
+                        </div>
+                        <div class="detail-item">
+                            <strong>Format:</strong> Interactive + individual components
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ideal for:</strong> Researchers building consistent records
+                        </div>
+                    </div>
+                    <p><strong>What you'll develop:</strong></p>
+                    <ul>
+                        <li>Systems for managing multiple publication projects</li>
+                        <li>Strategic thinking about journal/conference targeting</li>
+                        <li>Understanding of publication timelines and planning</li>
+                        <li>Methods for converting research into multiple publications</li>
+                        <li>Sustainable publication habits and workflows</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>Research Communication & Positioning</h4>
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <strong>Duration:</strong> Multi-week program
+                        </div>
+                        <div class="detail-item">
+                            <strong>Format:</strong> Structured program with exercises
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ideal for:</strong> All researchers
+                        </div>
+                    </div>
+                    <p><strong>What you'll develop:</strong></p>
+                    <ul>
+                        <li>Skills to position your research within scholarly conversations</li>
+                        <li>Ability to identify and articulate research contributions</li>
+                        <li>Understanding of how to engage with existing literature</li>
+                        <li>Techniques for responding to peer review constructively</li>
+                        <li>Strategies for building research narrative across publications</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>From Competition to Publication</h4>
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <strong>Duration:</strong> Intensive multi-week
+                        </div>
+                        <div class="detail-item">
+                            <strong>Format:</strong> Hands-on with your projects
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ideal for:</strong> Data scientists, competition participants
+                        </div>
+                    </div>
+                    <p><strong>What you'll develop:</strong></p>
+                    <ul>
+                        <li>Understanding of what makes competition work publishable</li>
+                        <li>Methods for extending competition solutions into research contributions</li>
+                        <li>Literature review strategies for positioning competitive work</li>
+                        <li>Techniques for experimental design beyond competition metrics</li>
+                        <li>Approaches for writing methodology and results from competition code</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>International Research Profile Building</h4>
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <strong>Duration:</strong> Multi-week program
+                        </div>
+                        <div class="detail-item">
+                            <strong>Format:</strong> Practical + ongoing support
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ideal for:</strong> Researchers seeking global visibility
+                        </div>
+                    </div>
+                    <p><strong>What you'll develop:</strong></p>
+                    <ul>
+                        <li>Strategic LinkedIn profile optimization for academic visibility</li>
+                        <li>Techniques for engaging with international research communities</li>
+                        <li>Understanding of how professors evaluate potential collaborators</li>
+                        <li>Methods for showcasing research online effectively</li>
+                        <li>Strategies for building meaningful academic networks</li>
+                        <li>Approaches for cold outreach that gets responses</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Cohort-Based Learning</h2>
+                <h3>Why Cohorts?</h3>
+                <p>Research can be isolating. Learning with peers who share your challenges creates accountability, diverse perspectives, and lasting professional networks.</p>
+
+                <p><strong>Cohort benefits:</strong></p>
+                <ul>
+                    <li>Peer learning from researchers at similar career stages</li>
+                    <li>Accountability through group progress tracking</li>
+                    <li>Diverse perspectives on research and publication strategies</li>
+                    <li>Professional network building with future collaborators</li>
+                    <li>Shared resources and knowledge exchange</li>
+                    <li>Motivation and support through challenges</li>
+                </ul>
+
+                <h3>Current Cohort Programs</h3>
+
+                <div class="program-card">
+                    <h4>Publication Pipeline Cohort</h4>
+                    <p>Small groups (8-12 researchers) working together over 8-12 weeks to develop sustainable publication systems, review each other's work, and build lasting publication habits.</p>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>Research Writing Cohort</h4>
+                    <p>Focused groups working on technical writing skills through peer review, collaborative editing, and structured feedback sessions.</p>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+
+                <div class="program-card">
+                    <h4>International Networking Cohort</h4>
+                    <p>Researchers building their global research profiles together, sharing strategies, accountability, and connections.</p>
+                    <a href="contact.html" class="btn">Contact for Details</a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Research Portfolio Development</h2>
+                <h3>Professional Research Websites</h3>
+                <p>Build your digital research presence with a professional portfolio website that showcases your work to the international academic community.</p>
+
+                <h3>What We Help You Create</h3>
+                <p><strong>Essential Components:</strong></p>
+                <ul>
+                    <li>Professional homepage with research overview</li>
+                    <li>Publications page with organized research output</li>
+                    <li>Project portfolio with descriptions and visuals</li>
+                    <li>About/CV page with academic background</li>
+                    <li>Contact and collaboration information</li>
+                </ul>
+
+                <p><strong>Why This Matters:</strong></p>
+                <p>A professional research website serves as your permanent academic home, independent of institution affiliations. It's the first place potential collaborators, funders, and students look to understand your work.</p>
+
+                <p><strong>Our Approach:</strong></p>
+                <p>We don't just build the website—we train you to maintain and update it yourself. You'll understand the structure, know how to add publications, update projects, and evolve your site as your research grows.</p>
+
+                <a href="contact.html" class="btn">Contact for Details</a>
+            </div>
+
+            <div class="section">
+                <h2>Workshops & Seminars</h2>
+                <p>Focused workshops on specific aspects of research development and publication strategy.</p>
+                <a href="workshops.html" class="btn btn-secondary">View All Workshops</a>
+            </div>
+
+            <div class="section">
+                <h2>Our Training Approach</h2>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <h4>Build Capabilities, Not Dependencies</h4>
+                        <p>We teach you the skills and systems to succeed independently, not create dependence on our services.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Learn by Doing</h4>
+                        <p>Our programs emphasize practical application with your own research, not abstract theory.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Peer Learning</h4>
+                        <p>We facilitate peer feedback and collaborative learning alongside expert instruction.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Sustainable Practices</h4>
+                        <p>We focus on building habits and systems that serve your entire career, not just immediate needs.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Ethical Research Communication</h4>
+                        <p>We emphasize integrity, transparency, and responsible research practices in all training.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Who We Train</h2>
+                <ul>
+                    <li><strong>PhD Students:</strong> Build publication skills early, develop sustainable research communication practices, establish online research presence.</li>
+                    <li><strong>Early-Career Researchers:</strong> Develop strategic publication approaches, build international visibility, create professional research portfolios.</li>
+                    <li><strong>Established Researchers:</strong> Mentor the next generation, develop institutional training programs, refine publication strategies.</li>
+                    <li><strong>International Researchers:</strong> Navigate English-language publication, build global networks, increase international visibility.</li>
+                    <li><strong>Transitioning Professionals:</strong> Data scientists moving to research, industry researchers entering academia, competition participants seeking publication.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <strong>How is this different from university writing centers?</strong>
+                    <p>We combine domain expertise in AI/ML research with publication experience in top venues. We understand your technical content and the specific expectations of your target journals/conferences.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Do I need to be in a specific field?</strong>
+                    <p>While our research is in multimodal AI, our training principles apply broadly. We work with researchers across computational fields and adjacent disciplines.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>What's the time commitment?</strong>
+                    <p>Varies by program. Individual workshops are 2-3 hours. Multi-week programs typically require 3-5 hours per week. We design programs to fit researcher schedules.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Can I join programs individually or do I need a group?</strong>
+                    <p>Both. We offer individual enrollment in cohort programs and also work with existing research groups or institutional arrangements.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Do you provide ongoing support after training?</strong>
+                    <p>Many programs include follow-up support periods. We also offer alumni communities for continued peer connection.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Is training available remotely?</strong>
+                    <p>Yes, most programs are available online with live interactive sessions. We also offer in-person options for institutional programs.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Do you work with non-native English speakers?</strong>
+                    <p>Yes, we have specific experience training international researchers and addressing language-specific challenges in academic writing.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Getting Started</h2>
+                <p><strong>Ready to build your publication pipeline and research profile?</strong></p>
+                <ol>
+                    <li>Identify your development needs</li>
+                    <li>Contact us to discuss program options</li>
+                    <li>Join a program or cohort</li>
+                    <li>Develop sustainable research practices</li>
+                </ol>
+                <br>
+                <a href="contact.html" class="btn">Contact Us</a>
+                <a href="workshops.html" class="btn btn-secondary">View Workshops</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VECTOR Research Lab</h4>
+                    <p>Advancing multimodal AI research while empowering the next generation of researchers through training and capacity building.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Research</h4>
+                    <ul>
+                        <li><a href="publication.html">Publications</a></li>
+                        <li><a href="research.html">Research Themes</a></li>
+                        <li><a href="research.html#projects">Projects</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Training & Development</h4>
+                    <ul>
+                        <li><a href="training.html">Training Programs</a></li>
+                        <li><a href="workshops.html">Workshops & Seminars</a></li>
+                        <li><a href="contact.html">Portfolio Development</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Lab</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="people.html">People</a></li>
+                        <li><a href="join.html">Join Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VECTOR Research Lab. All rights reserved. | Advancing multimodal AI research and building research capacity.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
